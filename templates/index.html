@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MiniPinterest</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <img class="logo" src="/static/images/9454161a-1c13-4dd2-8f15-e29c5a5588b7.png" alt="" srcset="">
+      <h1 class="logo-container-text">MiniPinterest</h1>
+    </div>
+  </header>
+  <form action="{{ url_for('upload_image') }}" method="post" enctype="multipart/form-data" class="upload-form">
+    <label class="file-label">
+      📁 Escolher imagem
+      <input type="file" name="file">
+    </label>
+    <button type="submit" class="upload-button">⬆️ Enviar</button>
+  </form>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class="flash-messages">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+
+  <div class="gallery">
+    {% for image in images %}
+    <div class="image-card">
+      <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ image }}">
+      <form action="{{ url_for('delete_image', filename=image) }}" method="post">
+        <button type="submit" class="delete-button">🗑️ Deletar</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    setTimeout(function () {
+      const flash = document.querySelector('.flash-messages');
+      if (flash) {
+        flash.style.transition = 'opacity 0.5s ease';
+        flash.style.opacity = '0';
+        setTimeout(() => flash.remove(), 500);
+      }
+    }, 3000);
+  </script>
+
+
+</body>
+
+</html>
